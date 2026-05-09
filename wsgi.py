@@ -421,10 +421,17 @@ def application(environ, start_response):
             # If with AI, auto-join AI
             if with_ai:
                 rooms[room_id].players.append(max_players - 1)  # AI is last
+            # Auto-join creator as player 0
+            rooms[room_id].players.insert(0, 0)
+            # Start game if room is full
+            if len(rooms[room_id].players) >= max_players:
+                rooms[room_id]._start_game()
             return send_json({
                 "room_id": room_id,
                 "max_players": max_players,
                 "with_ai": with_ai,
+                "player_idx": 0,
+                "started": rooms[room_id].started,
                 "message": "Комната создана! Отправь ID друзьям."
             }, start_response)
 
