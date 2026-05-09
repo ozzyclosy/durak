@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: durak
+    runtime: python
+    buildCommand: ""
+    startCommand: python durak_server.py
+    envVars:
+      - key: PORT
+        fromService:
+          type: web
+          name: durak
+          property: port
